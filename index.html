@@ -486,15 +486,7 @@ const stack=['C','C++','Python','MATLAB','Assembly','FreeRTOS','Embedded Linux',
 document.getElementById('rail').innerHTML=[...stack,...stack,...stack,...stack].map(s=>`<span class="pill pill--rail">${s}</span>`).join('');
 const projects=[
   {wide:true, title:"GPU ThermaGuard", status:"Hardware-in-the-loop",
-   desc:"A hardware-in-the-loop GPU thermal controller. An ESP32-S3 running FreeRTOS receives live telemetry from an NVIDIA T4 GPU through AWS IoT Core, decides how hot the GPU is allowed to run, and throttles a CUDA workload on that GPU in real time.",
-   bullets:[
-    "C++ agent samples T4 temperature, power, utilization and clocks through NVML at 10 Hz and streams them over MQTT, while a CUDA kernel lets the ESP32 scale GPU load from 0 to 100%.",
-    "Both devices connect to AWS IoT Core with mutual TLS, each with its own X.509 certificate and least-privilege policy.",
-    "Heap-free FreeRTOS firmware with a static queue and a JSON parser that validates every field and drops out-of-order Wi-Fi packets.",
-    "Five-state controller with 3 °C of hysteresis and proportional throttling that cut GPU board power from 70 W to 33 W.",
-    "Fail-safes on both ends: the ESP32 enters FAILSAFE on stale or bad telemetry, and the GPU agent pauses itself if commands stop for 3 s.",
-    "Telemetry logged to S3 through Amazon Data Firehose and analyzed with Athena SQL."
-   ],
+   desc:"A hardware-in-the-loop GPU thermal controller. An ESP32-S3 running heap-free FreeRTOS firmware receives live NVML telemetry from an NVIDIA T4 through AWS IoT Core over mutual-TLS MQTT, then throttles a CUDA workload on that GPU in real time. A five-state controller with hysteresis and proportional throttling cut GPU board power from 70 W to 33 W, with fail-safes on both ends if telemetry or commands stop. Every run is logged to S3 through Firehose and analyzed with Athena.",
    pills:["C++","CUDA","NVML","ESP-IDF","FreeRTOS","ESP32-S3","MQTT","TLS","AWS IoT Core","Firehose","S3","Athena"],
    links:[["GitHub","https://github.com/77olu/ThermaGuard"]]},
   {title:"Hawkeye", status:"Firmware",

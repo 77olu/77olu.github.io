@@ -280,6 +280,16 @@ body.modal-open{overflow:hidden}
         </div>
         <div class="exp">
           <div class="exp__item">
+            <div><h3 class="exp__role">Embedded Software Engineer</h3><p class="exp__org">USC Formula SAE Electric</p><p class="exp__date">Sep 2025 – Present</p></div>
+            <div class="exp__desc"><ul>
+              <li>Develop STM32F4 accumulator-management firmware in C/FreeRTOS using CAN, SPI, ADC-DMA, flash and watchdogs for real-time battery safety monitoring.</li>
+              <li>Build a Python test-automation GUI to decode DBC signals, replay CAN logs and detect invalid data.</li>
+              <li>Implement a BQ79600 SPI driver with CRC validation, timeouts, response parsing and daisy-chain bring-up.</li>
+              <li>Use MATLAB to analyze cell voltage, temperature and current telemetry and validate battery fault thresholds.</li>
+              <li>Write 7 host-side C test suites with 100+ assertions validating CAN protocols, battery logic and ADC data.</li>
+            </ul></div>
+          </div>
+          <div class="exp__item">
             <div><h3 class="exp__role">Semiconductor Intern</h3><p class="exp__org">California DREAMS</p><p class="exp__date">May 2026 – Aug 2026</p></div>
             <div class="exp__desc"><ul>
               <li>Designed a 4-layer audio amplifier PCB in KiCad within a 2 in × 2 in footprint, from schematic to fabrication.</li>
@@ -290,18 +300,10 @@ body.modal-open{overflow:hidden}
             </ul><a href="https://github.com/77olu/Battery-Powered-Subwoofer-AudioAmplifier" target="_blank" rel="noopener">View project ↗</a></div>
           </div>
           <div class="exp__item">
-            <div><h3 class="exp__role">Embedded Systems Engineer</h3><p class="exp__org">USC Formula SAE Electric</p><p class="exp__date">Sep 2025 – Present</p></div>
-            <div class="exp__desc"><ul>
-              <li>Develop STM32F4 accumulator-management firmware in C/FreeRTOS using CAN, SPI, ADC-DMA, flash and watchdogs for real-time battery safety monitoring.</li>
-              <li>Build a Python test-automation GUI to decode DBC signals, replay CAN logs and detect invalid data.</li>
-              <li>Use MATLAB to analyze cell voltage, temperature and current telemetry and validate battery fault thresholds.</li>
-              <li>Write 7 host-side C test suites with 100+ assertions validating CAN protocols, battery logic and ADC data.</li>
-            </ul></div>
-          </div>
-          <div class="exp__item">
             <div><h3 class="exp__role">Undergraduate Researcher</h3><p class="exp__org">University of Southern California</p><p class="exp__date">May 2026 – Jul 2026</p></div>
             <div class="exp__desc"><ul>
               <li>Optimized hardware-aware spiking neural networks (SNNs) for deployment on superconducting SFQ chips.</li>
+              <li>Built Python/PyTorch simulations to model SNN accuracy, operation count and SFQ hardware constraints.</li>
               <li>Pruned and quantized the network to fit a 3.4 × 3.9 mm SFQ chip, reducing fan-in and circuit complexity.</li>
               <li>Cut inference cost by 5× (1.27M to 254K operations) with a 3.65% accuracy gain, reducing on-chip energy use.</li>
               <li>Designed custom leaky integrate-and-fire neurons with signed ternary spikes (−1, 0, +1) and surrogate-gradient training.</li>
@@ -490,8 +492,8 @@ const projects=[
    pills:["C++","CUDA","NVML","ESP-IDF","FreeRTOS","ESP32-S3","MQTT","TLS","AWS IoT Core","Firehose","S3","Athena"],
    links:[["GitHub","https://github.com/77olu/ThermaGuard"]]},
   {title:"Hawkeye", status:"Firmware",
-   desc:"Finds the most interesting thing in a room and points at it. An ATmega328P fuses light, motion and temperature data and aims a servo at the strongest source. Runs FreeRTOS with a sampling task and a control task joined by a queue, a register-level I²C driver for the MPU-6050, and a complementary filter for tilt compensation.",
-   pills:["Embedded C","FreeRTOS","ATmega328P","I²C","PWM"], links:[["GitHub","https://github.com/77olu/hawkeye"]]},
+   desc:"An embedded positioning system in C/FreeRTOS that finds light sources and controls motion. Fuses accelerometer and gyroscope data with a complementary filter for real-time orientation, then combines orientation with phototransistor data to estimate target bearing, confidence and motion commands. Built on a register-level I²C driver and FreeRTOS tasks for concurrent sensing, perception and actuation.",
+   pills:["Embedded C","FreeRTOS","Sensor Fusion","Motion Control","I²C"], links:[["GitHub","https://github.com/77olu/hawkeye"]]},
   {title:"Ultrasonic Speedometer", status:"Firmware",
    desc:"Measures an object's speed to 0.1 cm/s. Interrupt-driven echo capture with hardware timers, a state machine for two-sample velocity, a validated USART packet protocol, and an adjustable threshold saved in EEPROM with LED and buzzer feedback.",
    pills:["Embedded C","ATmega328P","Interrupts","USART","EEPROM"], links:[["GitHub","https://github.com/77olu/speedometer"]]},

@@ -100,6 +100,9 @@ main{min-height:calc(100vh - 160px)}
 .project-card__icon{color:var(--red);font-size:1.1rem;line-height:1}
 .project-card__title{font-family:var(--font-headline);font-size:1.1rem;font-weight:500;margin-bottom:16px}
 .project-card__desc{font-size:.85rem;color:var(--text-2);line-height:1.7;flex:1;margin-bottom:28px}
+.project-card__bullets{list-style:disc;padding-left:1.1rem;margin:-8px 0 20px;columns:2 320px;column-gap:40px;font-size:.84rem;color:var(--text-2);line-height:1.65}
+.project-card__bullets li{break-inside:avoid;margin-bottom:8px}
+.project-card__next{font-size:.82rem;color:var(--red);margin-bottom:24px}
 .project-card__pills{display:flex;flex-wrap:wrap;gap:8px}
 .project-card__links{display:flex;gap:20px;margin-top:24px;font-family:var(--font-headline);font-size:.72rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase}
 .project-card__links a{color:var(--red);border-bottom:1px solid var(--red-line);padding-bottom:2px}
@@ -414,10 +417,10 @@ body.modal-open{overflow:hidden}
           <span class="contact__channel-value">github.com/77olu</span>
           <span class="contact__channel-icon">↗</span>
         </a>
-        <a class="contact__channel" href="https://www.linkedin.com/in/olu-olowe" target="_blank" rel="noopener">
+        <a class="contact__channel" href="https://www.linkedin.com/in/olu-olowe-810351312/" target="_blank" rel="noopener">
           <span class="contact__channel-icon">//</span>
           <span class="contact__channel-label">LinkedIn</span>
-          <span class="contact__channel-value">linkedin.com/in/olu-olowe</span>
+          <span class="contact__channel-value">linkedin.com/in/olu-olowe-810351312</span>
           <span class="contact__channel-icon">↗</span>
         </a>
         <div class="contact__channel">
@@ -449,7 +452,7 @@ body.modal-open{overflow:hidden}
   <span class="footer__copyright">© 2026 Oluwaseyifunmi Olowe</span>
   <div class="footer__links">
     <a class="footer__link" href="https://github.com/77olu" target="_blank" rel="noopener">GitHub</a>
-    <a class="footer__link" href="https://www.linkedin.com/in/olu-olowe" target="_blank" rel="noopener">LinkedIn</a>
+    <a class="footer__link" href="https://www.linkedin.com/in/olu-olowe-810351312/" target="_blank" rel="noopener">LinkedIn</a>
     <a class="footer__link" href="#contact">Email</a>
   </div>
 </footer>
@@ -476,15 +479,29 @@ addEventListener('hashchange',()=>show(location.hash.slice(1)));
 const fullText="Hi I'm Olu, a Computer Engineering and Computer Science student at the University of Southern California interested in building the firmware and hardware behind robots, cars, chips and AI";
 const typedEl=document.getElementById('typed-text');
 if(reduce){ typedEl.textContent=fullText; }
-else{ let i=0; setTimeout(function tick(){ typedEl.textContent=fullText.slice(0,++i); if(i<fullText.length) setTimeout(tick,35); },500); }
+else{ let i=0; setTimeout(function tick(){ typedEl.textContent=fullText.slice(0,++i); if(i<fullText.length) setTimeout(tick,14); },250); }
 
 /* ---------- projects (from github.com/77olu) ---------- */
 const stack=['C','C++','Python','MATLAB','Assembly','FreeRTOS','Embedded Linux','STM32','CAN','SPI','I²C','UART','MQTT','TCP/IP','PyTorch','AWS','Docker','Git','CUDA','CMake','KiCad','SolidWorks'];
 document.getElementById('rail').innerHTML=[...stack,...stack,...stack,...stack].map(s=>`<span class="pill pill--rail">${s}</span>`).join('');
 const projects=[
-  {wide:true, title:"GPU ThermaGuard", status:"Firmware",
-   desc:"A hardware-in-the-loop GPU validation platform that pairs an ESP32 FreeRTOS controller with an NVIDIA T4 on AWS EC2. Profiles GPU thermals, power, utilization and clocks under CUDA workloads, sampled at 10 Hz, cutting peak temperature by 9 °C. FreeRTOS networking tasks run over Wi-Fi, TCP/TLS and MQTT, and the watchdogs and failsafe control held up through 50 injected thermal and communication faults.",
-   pills:["C++","ESP-IDF","FreeRTOS","CUDA","NVML","AWS IoT"], links:[]},
+  {wide:true, title:"GPU ThermaGuard", status:"Hardware-in-the-loop",
+   desc:"A hardware-in-the-loop GPU thermal controller. An ESP32-S3 running FreeRTOS receives live telemetry from an NVIDIA T4 GPU through AWS IoT Core, decides how hot the GPU is allowed to run, and throttles a CUDA workload on that GPU in real time.",
+   bullets:[
+    "C++ agent samples T4 temperature, power, utilization and SM/memory clocks through NVML at 10 Hz and publishes each reading as JSON over MQTT.",
+    "CUDA FMA burn kernel on a 100 ms duty cycle, so commands from the ESP32 can scale GPU load anywhere from 0 to 100%.",
+    "Both devices connect to AWS IoT Core over MQTT with mutual TLS, each with its own X.509 certificate and least-privilege policy.",
+    "Firmware built around a dedicated FreeRTOS controller task fed by a statically allocated queue, with no heap allocation at runtime.",
+    "Heap-free JSON parser validates every field and orders messages by timestamp, so packets reordered by Wi-Fi (about 25% on a weak link) never overwrite newer data.",
+    "Five-state controller (NORMAL, WARM, THROTTLE, CRITICAL, FAILSAFE) with 3 °C of hysteresis; thresholds track the session's lowest temperature, with CRITICAL capped at 83 °C.",
+    "Proportional throttling cut GPU board power from 70 W to 33 W in testing.",
+    "Fail-safes on both ends: FAILSAFE after 1.5 s of stale telemetry, a lost connection or three bad messages in a row, and the GPU agent pauses itself if commands stop for 3 s.",
+    "Measured a control-authority limit: an idle T4 still drifted to 77 °C, so throttling alone can't cool a GPU below its idle equilibrium.",
+    "All telemetry is logged through an IoT Rule and Amazon Data Firehose into S3, with an Athena table for analyzing each run."
+   ],
+   next:"Next up: a physical PWM cooling output (a DC motor through an L298N) and state LEDs.",
+   pills:["C++","CUDA","NVML","ESP-IDF","FreeRTOS","ESP32-S3","MQTT","TLS","AWS IoT Core","Firehose","S3","Athena"],
+   links:[["GitHub","https://github.com/77olu/ThermaGuard"]]},
   {title:"Hawkeye", status:"Firmware",
    desc:"Finds the most interesting thing in a room and points at it. An ATmega328P fuses light, motion and temperature data and aims a servo at the strongest source. Runs FreeRTOS with a sampling task and a control task joined by a queue, a register-level I²C driver for the MPU-6050, and a complementary filter for tilt compensation.",
    pills:["Embedded C","FreeRTOS","ATmega328P","I²C","PWM"], links:[["GitHub","https://github.com/77olu/hawkeye"]]},
@@ -506,6 +523,8 @@ document.getElementById('project-grid').innerHTML=projects.map(p=>`
     </div>
     <h3 class="project-card__title">${p.title}</h3>
     <p class="project-card__desc">${p.desc}</p>
+    ${p.bullets?`<ul class="project-card__bullets">${p.bullets.map(b=>`<li>${b}</li>`).join('')}</ul>`:''}
+    ${p.next?`<p class="project-card__next">${p.next}</p>`:''}
     <div class="project-card__pills">${p.pills.map(x=>`<span class="pill">${x}</span>`).join('')}</div>
     ${p.links.length?`<div class="project-card__links">${p.links.map(([n,u])=>`<a href="${u}" target="_blank" rel="noopener">${n} ↗</a>`).join('')}</div>`:''}
   </article>`).join('');
